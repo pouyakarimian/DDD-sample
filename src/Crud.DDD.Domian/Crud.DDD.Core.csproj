@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Aggregates\CustomerAggregate\Entites\" />
+    <Folder Include="Aggregates\CustomerAggregate\Enums\" />
+    <Folder Include="Aggregates\CustomerAggregate\Exeptions\" />
+    <Folder Include="Aggregates\CustomerAggregate\ValueObjects\" />
     <Folder Include="Aggregates\OrderAggregate\Enums\" />
     <Folder Include="Aggregates\OrderAggregate\Exeptions\" />
     <Folder Include="Aggregates\OrderAggregate\ValueObjects\" />
@@ -18,8 +22,10 @@
     <Folder Include="Aggregates\UserAggregate\Entites\" />
     <Folder Include="Aggregates\UserAggregate\ValueObjects\" />
     <Folder Include="Common\Enums\" />
-    <Folder Include="Common\Exeptions\" />
-    <Folder Include="Common\ValueObjects\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DDD-sample.Core.Shared\Crud.DDD.Core.Shared.csproj" />
   </ItemGroup>
 
 </Project>

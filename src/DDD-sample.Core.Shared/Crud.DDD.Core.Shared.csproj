@@ -2,13 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>Crud.DDD.Core.Shared</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Crud.DDD.Domian\Crud.DDD.Core.csproj" />
-    <ProjectReference Include="..\Crud.DDD.Infrastructure\Crud.DDD.Infrastructure.csproj" />
-  </ItemGroup>
 
 </Project>

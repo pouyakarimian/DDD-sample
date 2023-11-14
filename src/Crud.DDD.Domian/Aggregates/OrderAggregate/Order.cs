@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crud.DDD.Domian.Aggregates.Order
+namespace Crud.DDD.Core.Aggregates.Order
 {
     internal class Order
     {
