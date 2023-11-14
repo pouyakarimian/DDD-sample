@@ -6,4 +6,20 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Aggregates\OrderAggregate\Enums\" />
+    <Folder Include="Aggregates\OrderAggregate\Exeptions\" />
+    <Folder Include="Aggregates\OrderAggregate\ValueObjects\" />
+    <Folder Include="Aggregates\ProductAggregate\Enums\" />
+    <Folder Include="Aggregates\ProductAggregate\Exeptions\" />
+    <Folder Include="Aggregates\ProductAggregate\ValueObjects\" />
+    <Folder Include="Aggregates\UserAggregate\Enums\" />
+    <Folder Include="Aggregates\UserAggregate\Exeptions\" />
+    <Folder Include="Aggregates\UserAggregate\Entites\" />
+    <Folder Include="Aggregates\UserAggregate\ValueObjects\" />
+    <Folder Include="Common\Enums\" />
+    <Folder Include="Common\Exeptions\" />
+    <Folder Include="Common\ValueObjects\" />
+  </ItemGroup>
+
 </Project>
