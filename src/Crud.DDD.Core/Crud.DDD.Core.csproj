@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DDD-sample.Core.Shared\Crud.DDD.Core.Shared.csproj" />
+    <ProjectReference Include="..\Crud.DDD.Core.Shared\Crud.DDD.Core.Shared.csproj" />
   </ItemGroup>
 
 </Project>

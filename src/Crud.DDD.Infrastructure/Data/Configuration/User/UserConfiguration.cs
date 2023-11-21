@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Crud.DDD.Infrastructure.Data.Configuration.User
 {
-    public class UserConfiguration : IEntityTypeConfiguration<Core.Aggregates.UserAggregate.User>
+    public class UserConfiguration : IEntityTypeConfiguration<Crud.DDD.Core.Aggregates.UserAggregate.User>
     {
         public void Configure(EntityTypeBuilder<Core.Aggregates.UserAggregate.User> builder)
         {
