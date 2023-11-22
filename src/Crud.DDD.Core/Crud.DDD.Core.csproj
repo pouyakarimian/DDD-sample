@@ -25,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Crud.DDD.Core.Shared\Crud.DDD.Core.Shared.csproj" />
   </ItemGroup>
 

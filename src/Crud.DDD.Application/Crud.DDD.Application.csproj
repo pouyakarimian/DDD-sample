@@ -7,8 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Crud.DDD.Domian\Crud.DDD.Core.csproj" />
+    <ProjectReference Include="..\Crud.DDD.Core\Crud.DDD.Core.csproj" />
     <ProjectReference Include="..\Crud.DDD.Infrastructure\Crud.DDD.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
+    <Folder Include="Features\User\Commands\" />
+    <Folder Include="Features\User\Mappings\" />
+    <Folder Include="Features\User\Dtos\" />
+    <Folder Include="Features\User\Queries\" />
   </ItemGroup>
 
 </Project>

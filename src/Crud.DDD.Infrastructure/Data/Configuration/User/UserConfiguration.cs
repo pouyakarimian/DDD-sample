@@ -12,7 +12,11 @@ namespace Crud.DDD.Infrastructure.Data.Configuration.User
             builder.Property(p => p.FirstName).IsRequired().HasMaxLength(50);
             builder.Property(p => p.LastName).IsRequired(false).HasMaxLength(50);
             builder.Property(p => p.Email).IsRequired().HasMaxLength(50);
-            builder.HasIndex(p => p.Email).IsUnique();
+            builder.HasIndex(p => p.Email)
+                .HasFilter("IsDeleted=0")
+                .IsUnique();
+            builder.OwnsOne(p => p.Email);
+            builder.Ignore(p => p.DomainEvents);
         }
     }
 }

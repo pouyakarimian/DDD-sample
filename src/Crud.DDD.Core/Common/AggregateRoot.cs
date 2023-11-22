@@ -2,17 +2,9 @@
 {
     public abstract class AggregateRoot<TKey> : Entity<TKey>
     {
-        protected AggregateRoot(TKey id) : base(id)
-        {
-        }
-        protected AggregateRoot(TKey id,
-           DateTime modifyDate,
-           bool isDeleted) : base(id, modifyDate, isDeleted)
-        {
-        }
+        private readonly List<IDomainEvent> _events = new();
 
-        protected AggregateRoot(TKey id,
-          DateTime modifyDate) : base(id, modifyDate)
+        protected AggregateRoot(TKey id) : base(id)
         {
         }
 
@@ -29,6 +21,16 @@
         public override string? ToString()
         {
             return base.ToString();
+        }
+
+        public IReadOnlyList<IDomainEvent> DomainEvents { get { return _events.ToList(); } }
+        protected void ClearDomainEvents()
+        {
+            _events.Clear();
+        }
+        protected void RaiseDomainEvent(IDomainEvent domainEvent)
+        {
+            _events.Add(domainEvent);
         }
     }
 }
