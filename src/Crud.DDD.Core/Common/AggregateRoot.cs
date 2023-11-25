@@ -1,16 +1,18 @@
 ﻿namespace Crud.DDD.Core.Common
 {
-    public abstract class AggregateRoot<TKey> : Entity<TKey>
+    public abstract class AggregateRoot : AggregateRoot<Guid>
+    {
+        protected AggregateRoot(Guid id) : base(id)
+        {
+        }
+    }
+
+    public abstract class AggregateRoot<TKey> : Entity<TKey> where TKey : notnull
     {
         private readonly List<IDomainEvent> _events = new();
 
         protected AggregateRoot(TKey id) : base(id)
         {
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is Entity<TKey> entity && Id.Equals(entity.Id);
         }
 
         public override int GetHashCode()

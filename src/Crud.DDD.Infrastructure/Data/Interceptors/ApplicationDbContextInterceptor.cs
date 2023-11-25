@@ -16,6 +16,7 @@ namespace Crud.DDD.Infrastructure.Data.Interceptors
             var userId = Guid.NewGuid();
 
             var entries = eventData.Context.ChangeTracker.Entries();
+
             foreach (var entry in entries)
             {
                 var fullAuditedModel = entry.Entity as IFullAudited;

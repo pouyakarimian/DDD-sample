@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Crud.DDD.Core.Aggregates.UserAggregate;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Crud.DDD.Infrastructure.Data.Configuration.User
@@ -11,11 +12,21 @@ namespace Crud.DDD.Infrastructure.Data.Configuration.User
             builder.Property(p => p.Id).ValueGeneratedNever();
             builder.Property(p => p.FirstName).IsRequired().HasMaxLength(50);
             builder.Property(p => p.LastName).IsRequired(false).HasMaxLength(50);
-            builder.Property(p => p.Email).IsRequired().HasMaxLength(50);
-            builder.HasIndex(p => p.Email)
-                .HasFilter("IsDeleted=0")
-                .IsUnique();
-            builder.OwnsOne(p => p.Email);
+            builder.OwnsOne(p => p.Email, ownedNav =>
+            {
+                ownedNav
+                    .Property(email => email.Address)
+                    .IsRequired() // NOT NULL
+                    .HasMaxLength(254)
+                    .HasColumnName("Email");
+
+                // Unique Index
+                ownedNav
+                    .HasIndex(email => email.Address)
+                    .HasFilter("IsDeleted=0")
+                    .IsUnique();
+            });
+
             builder.Ignore(p => p.DomainEvents);
         }
     }

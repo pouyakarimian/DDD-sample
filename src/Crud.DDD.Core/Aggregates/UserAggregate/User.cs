@@ -5,8 +5,12 @@ using Crud.DDD.Core.Common.ValueObjects;
 
 namespace Crud.DDD.Core.Aggregates.UserAggregate
 {
-    public class User : AggregateRoot<Guid>, ISoftDelete, IFullAudited
+    public class User : AggregateRoot, ISoftDelete, IFullAudited
     {
+        public User(Guid id):base(id)
+        {
+        }
+
         private User(Guid id, string firstName, string lastName, Email email)
             : base(id)
         {
@@ -46,9 +50,7 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate
             if (string.IsNullOrEmpty(id.ToString()))
                 throw new BusinessException($"{nameof(id)} can't be null");
 
-            var modifyDate = DateTime.Now;
-
-            return new User(id, firstName, lastName, email, modifyDate);
+            return new User(id, firstName, lastName, email);
         }
     }
 }

@@ -7,7 +7,9 @@ namespace Crud.DDD.Infrastructure.Data.Context
 {
     public class ApplicationDBContext : DbContext
     {
-        public ApplicationDBContext(DbContextOptions<DbContext> options)
+        public ApplicationDBContext() { }
+
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
             : base(options)
         {
 

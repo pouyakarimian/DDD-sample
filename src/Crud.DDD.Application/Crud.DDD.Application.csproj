@@ -13,10 +13,11 @@
 
   <ItemGroup>
     <Folder Include="Behaviors\" />
-    <Folder Include="Features\User\Commands\" />
-    <Folder Include="Features\User\Mappings\" />
-    <Folder Include="Features\User\Dtos\" />
     <Folder Include="Features\User\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
   </ItemGroup>
 
 </Project>
