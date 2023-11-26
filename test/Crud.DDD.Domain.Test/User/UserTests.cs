@@ -12,7 +12,7 @@ namespace Crud.DDD.Domain.Test.User
             var user = Crud.DDD.Core.Aggregates.UserAggregate
                 .User.Create("pouya", "karimian", email);
 
-            Assert.NotNull(user.Id);
+            Assert.NotEmpty(user.Id.ToString());
         }
     }
 }
