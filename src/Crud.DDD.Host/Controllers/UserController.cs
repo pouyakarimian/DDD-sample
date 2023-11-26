@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Crud.DDD.Host.Controllers
 {
-    [Route("api/[controller/[action]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
     {

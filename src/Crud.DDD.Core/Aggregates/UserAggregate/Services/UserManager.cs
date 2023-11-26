@@ -19,7 +19,7 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate.Services
         public async Task<User> AddAsync(User user, CancellationToken cancellationToken)
         {
             var isExistingByEmailOrUserName = await _userRepository
-            .IsExistingByEmailOrUserName(user.Email.Address, user.LastName, cancellationToken);
+            .IsExistingByEmailOrUserName(user.Email.Address, user.UserName, cancellationToken);
 
             if (isExistingByEmailOrUserName)
                 throw new NotFoundExeption($"This email {user.UserName} already used");
