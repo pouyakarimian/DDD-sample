@@ -12,7 +12,7 @@ namespace Crud.DDD.Core.Common.ValueObjects
         public Email(string email)
         {
             if (string.IsNullOrEmpty(email))
-                throw new Exception();
+                throw new BusinessException($"{nameof(email)} can't be null");
 
             if (!RegexPatterns.EmailIsValid.IsMatch(email))
                 throw new BusinessException("Invaild email");

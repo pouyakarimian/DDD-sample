@@ -7,7 +7,7 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate
 {
     public class User : AggregateRoot, ISoftDelete, IFullAudited
     {
-        public User(Guid id):base(id)
+        public User(Guid id) : base(id)
         {
         }
 
@@ -30,22 +30,24 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate
         public DateTime? DeleteTime { get; set; }
         public DateTime? ModifyTime { get; set; }
 
-        public User Create(string firstName, string lastName, Email email)
+        public static User Create(string firstName, string lastName, Email email)
         {
             if (string.IsNullOrEmpty(firstName))
-                throw new BusinessException($"{nameof(firstName)} can't be null");
+                ArgumentException.ThrowIfNullOrEmpty($"{nameof(firstName)} can't be null");
 
             var userId = Guid.NewGuid();
 
-            RaiseDomainEvent(new CreateUserDomainEvent(userId, firstName, lastName, email.Address));
+            var user = new User(userId, firstName, lastName, email);
 
-            return new User(userId, firstName, lastName, email);
+            user.RaiseDomainEvent(new CreateUserDomainEvent(userId, firstName, lastName, email.Address));
+
+            return user;
         }
 
-        public User Update(Guid id, string firstName, string lastName, Email email)
+        public static User Update(Guid id, string firstName, string lastName, Email email)
         {
             if (string.IsNullOrEmpty(firstName))
-                throw new BusinessException($"{nameof(firstName)} can't be null");
+                ArgumentException.ThrowIfNullOrEmpty($"{nameof(firstName)} can't be null");
 
             if (string.IsNullOrEmpty(id.ToString()))
                 throw new BusinessException($"{nameof(id)} can't be null");

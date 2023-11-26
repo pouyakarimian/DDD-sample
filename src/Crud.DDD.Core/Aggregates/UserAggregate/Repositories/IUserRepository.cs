@@ -2,7 +2,7 @@
 
 namespace Crud.DDD.Core.Aggregates.UserAggregate.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : IBaseRepository<User, Guid>
     {
     }
 }
