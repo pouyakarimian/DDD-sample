@@ -1,5 +1,6 @@
 using Crud.DDD.Application;
 using Crud.DDD.Infrastructure;
+using Crud.DDD.Core;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
+    .RegisterCoreLayer(builder.Configuration)
     .RegisterApplicationLayer(builder.Configuration)
     .RegisterInfrastructure(builder.Configuration);
 
