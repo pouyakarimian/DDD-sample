@@ -11,8 +11,9 @@ namespace Crud.DDD.Infrastructure.Data.Repositories.User
         {
         }
 
-        public async Task<bool> IsExistingByEmail(string email, CancellationToken cancellationToken)
+        public async Task<bool> IsExistingByEmailOrUserName(string email, string userName, CancellationToken cancellationToken)
         => await (GetAllAsNoTracking())
-            .AnyAsync(p => p.Email.Address.Equals(email), cancellationToken);
+            .AnyAsync(p => p.Email.Address.Equals(email)
+            || p.UserName.Equals(userName), cancellationToken);
     }
 }

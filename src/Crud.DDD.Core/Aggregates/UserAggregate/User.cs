@@ -1,6 +1,5 @@
 ﻿using Crud.DDD.Core.Aggregates.UserAggregate.Events;
 using Crud.DDD.Core.Common;
-using Crud.DDD.Core.Common.Exeptions;
 using Crud.DDD.Core.Common.ValueObjects;
 
 namespace Crud.DDD.Core.Aggregates.UserAggregate
@@ -11,14 +10,16 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate
         {
         }
 
-        private User(Guid id, string firstName, string lastName, Email email)
+        private User(Guid id, string userName, string firstName, string lastName, Email email)
             : base(id)
         {
             FirstName = firstName;
             LastName = lastName;
             Email = email;
+            UserName = userName;
         }
 
+        public string UserName { get; private set; } = string.Empty;
         public string FirstName { get; private set; } = string.Empty;
         public string LastName { get; private set; } = string.Empty;
         public Email Email { get; private set; }
@@ -30,29 +31,40 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate
         public DateTime? DeleteTime { get; set; }
         public DateTime? ModifyTime { get; set; }
 
-        public static User Create(string firstName, string lastName, Email email)
+        public static User Create(string userName, string firstName, string lastName, Email email)
         {
-            if (string.IsNullOrEmpty(firstName))
-                ArgumentException.ThrowIfNullOrEmpty($"{nameof(firstName)} can't be null");
+            ArgumentException.ThrowIfNullOrEmpty($"{nameof(firstName)} can't be null");
+
+            ArgumentException.ThrowIfNullOrEmpty($"{nameof(userName)} can't be null");
+
+            email = Email.Create(email.Address);
 
             var userId = Guid.NewGuid();
 
-            var user = new User(userId, firstName, lastName, email);
+            var user = new User(userId, userName, firstName, lastName, email);
 
-            user.RaiseDomainEvent(new CreateUserDomainEvent(userId, firstName, lastName, email.Address));
+            user.RaiseDomainEvent(new CreateUserDomainEvent(userId, userName, firstName, lastName, email.Address));
 
             return user;
         }
 
-        public static User Update(Guid id, string firstName, string lastName, Email email)
+        public User Update(Guid id, string userName, string firstName, string lastName, Email email)
         {
-            if (string.IsNullOrEmpty(firstName))
-                ArgumentException.ThrowIfNullOrEmpty($"{nameof(firstName)} can't be null");
+            ArgumentException.ThrowIfNullOrEmpty(firstName, $"{nameof(firstName)} can't be null");
 
-            if (string.IsNullOrEmpty(id.ToString()))
-                throw new BusinessException($"{nameof(id)} can't be null");
+            ArgumentException.ThrowIfNullOrEmpty(userName, $"{nameof(userName)} can't be null");
 
-            return new User(id, firstName, lastName, email);
+            ArgumentException.ThrowIfNullOrEmpty(id.ToString(), $"{nameof(id)} can't be null");
+
+            ArgumentException.ThrowIfNullOrEmpty(email.Address, $"{nameof(email)} can't be null");
+
+            email = Email.Create(email.Address);
+
+            var user = new User(id, userName, firstName, lastName, email);
+
+            user.RaiseDomainEvent(new UpdateUserDomainEvent(id, userName, firstName, lastName, email.Address));
+
+            return user;
         }
     }
 }

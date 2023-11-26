@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Crud.DDD.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20231125132546_InitDb")]
+    [Migration("20231126230733_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -60,7 +60,16 @@ namespace Crud.DDD.Infrastructure.Migrations
                     b.Property<Guid?>("ModifyUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("IsDeleted=0");
 
                     b.ToTable("Users");
                 });

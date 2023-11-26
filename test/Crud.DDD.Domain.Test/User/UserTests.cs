@@ -10,7 +10,7 @@ namespace Crud.DDD.Domain.Test.User
             var email = Email.Create("pouya@gmail.com");
 
             var user = Crud.DDD.Core.Aggregates.UserAggregate
-                .User.Create("pouya", "karimian", email);
+                .User.Create("Kpouya96", "pouya", "karimian", email);
 
             Assert.NotEmpty(user.Id.ToString());
         }

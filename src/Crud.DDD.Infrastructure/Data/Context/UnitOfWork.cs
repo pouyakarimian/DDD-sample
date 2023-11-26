@@ -8,11 +8,11 @@ namespace Crud.DDD.Infrastructure.Data.Context
     public sealed class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDBContext _context;
-        private readonly IMediator _mediator;
-        public UnitOfWork(ApplicationDBContext context, IMediator mediator)
+        //private readonly IMediator _mediator;
+        public UnitOfWork(ApplicationDBContext context)
         {
             _context = context;
-            _mediator = mediator;
+            //_mediator = mediator;
         }
 
         public async Task CommitAsync()

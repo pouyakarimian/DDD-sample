@@ -2,14 +2,14 @@
 
 namespace Crud.DDD.Core.Aggregates.UserAggregate.Events
 {
-    public sealed record CreateUserDomainEvent : IDomainEvent
+    public sealed record UpdateUserDomainEvent : IDomainEvent
     {
-        private CreateUserDomainEvent()
+        private UpdateUserDomainEvent()
         {
 
         }
 
-        public CreateUserDomainEvent(Guid id, string userName, string firstName,
+        public UpdateUserDomainEvent(Guid id, string userName, string firstName,
             string lastName, string email)
         {
             Id = id;
@@ -20,8 +20,8 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate.Events
         }
 
         public Guid Id { get; private set; }
-        public string FirstName { get; private set; } = string.Empty;
         public string UserName { get; private set; } = string.Empty;
+        public string FirstName { get; private set; } = string.Empty;
         public string LastName { get; private set; } = string.Empty;
         public string Email { get; private set; } = string.Empty;
     }

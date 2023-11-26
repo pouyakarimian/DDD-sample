@@ -20,7 +20,10 @@ namespace Crud.DDD.Infrastructure
                 option.AddInterceptors(new ApplicationDbContextInterceptor());
             });
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddScoped<IUserRepository, UserRepository>();
+            
             services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
 
             return services;

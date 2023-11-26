@@ -14,6 +14,9 @@ namespace Crud.DDD.Application
 
             services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
 
+            services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(typeof(ApplicationBootstraper).Assembly));
+
             return services;
         }
     }

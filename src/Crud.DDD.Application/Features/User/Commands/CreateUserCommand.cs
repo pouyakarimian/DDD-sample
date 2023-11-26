@@ -7,6 +7,7 @@ namespace Crud.DDD.Application.Features.User.Commands
 {
     public record CreateUserCommand : IRequest
     {
+        public string UserName { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
@@ -19,6 +20,10 @@ namespace Crud.DDD.Application.Features.User.Commands
             RuleFor(p => p.FirstName)
                 .NotEmpty()
                 .MaximumLength(50);
+
+            RuleFor(p => p.UserName)
+               .NotEmpty()
+               .MaximumLength(50);
 
             RuleFor(p => p.Email)
                .NotEmpty()
@@ -41,7 +46,7 @@ namespace Crud.DDD.Application.Features.User.Commands
             var email = Email.Create(request.Email);
 
             var userDomain = Core.Aggregates.UserAggregate
-                .User.Create(request.FirstName, request.LastName, email);
+                .User.Create(request.UserName,request.FirstName, request.LastName, email);
 
             await _userManager.AddAsync(userDomain, cancellationToken);
         }

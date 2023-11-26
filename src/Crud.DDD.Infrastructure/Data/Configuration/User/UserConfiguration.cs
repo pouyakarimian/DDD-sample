@@ -1,5 +1,4 @@
-﻿using Crud.DDD.Core.Aggregates.UserAggregate;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Crud.DDD.Infrastructure.Data.Configuration.User
@@ -9,9 +8,26 @@ namespace Crud.DDD.Infrastructure.Data.Configuration.User
         public void Configure(EntityTypeBuilder<Core.Aggregates.UserAggregate.User> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(p => p.Id).ValueGeneratedNever();
-            builder.Property(p => p.FirstName).IsRequired().HasMaxLength(50);
-            builder.Property(p => p.LastName).IsRequired(false).HasMaxLength(50);
+
+            builder.Property(p => p.Id)
+                .ValueGeneratedNever();
+
+            builder.Property(p => p.FirstName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            builder.Property(p => p.LastName)
+                .IsRequired(false)
+                .HasMaxLength(50);
+
+            builder.Property(p => p.UserName)
+                .IsRequired(true)
+                .HasMaxLength(50);
+
+            builder.HasIndex(p => p.UserName)
+                .IsUnique()
+                .HasFilter("IsDeleted=0");
+
             builder.OwnsOne(p => p.Email, ownedNav =>
             {
                 ownedNav

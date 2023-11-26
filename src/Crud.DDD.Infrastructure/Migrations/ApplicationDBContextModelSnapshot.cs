@@ -57,7 +57,16 @@ namespace Crud.DDD.Infrastructure.Migrations
                     b.Property<Guid?>("ModifyUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("IsDeleted=0");
 
                     b.ToTable("Users");
                 });
