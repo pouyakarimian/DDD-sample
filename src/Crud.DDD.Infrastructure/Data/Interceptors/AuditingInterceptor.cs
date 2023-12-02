@@ -4,16 +4,22 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Crud.DDD.Infrastructure.Data.Interceptors
 {
-    public partial class ApplicationDbContextInterceptor : SaveChangesInterceptor
+    public partial class AuditingInterceptor : SaveChangesInterceptor
     {
-        public override InterceptionResult<int> SavingChanges(DbContextEventData eventData,
-            InterceptionResult<int> result)
+        private readonly ICurrentUserService _currentUserService;
+
+        public AuditingInterceptor(ICurrentUserService currentUserService)
+        {
+            _currentUserService = currentUserService;
+        }
+
+
+        public override async ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
         {
             if (eventData.Context is null)
-                return base.SavingChanges(eventData, result);
+                return await base.SavedChangesAsync(eventData, result, cancellationToken);
 
-            //TODO:Should read from token or seasion
-            var userId = Guid.NewGuid();
+            var user = await _currentUserService.GetCurrentUserAsync();
 
             var entries = eventData.Context.ChangeTracker.Entries();
 
@@ -26,13 +32,13 @@ namespace Crud.DDD.Infrastructure.Data.Interceptors
                 if (fullAuditedModel != null && entry.State == EntityState.Added)
                 {
                     fullAuditedModel.CreateTime = DateTime.Now;
-                    fullAuditedModel.CreateUserId = userId;
+                    fullAuditedModel.CreateUserId = user.Id;
                 }
 
                 if (fullAuditedModel != null && entry.State == EntityState.Modified)
                 {
                     fullAuditedModel.CreateTime = DateTime.Now;
-                    fullAuditedModel.ModifyUserId = userId;
+                    fullAuditedModel.ModifyUserId = user.Id;
                 }
 
                 if (softDeleteModel != null && entry.State == EntityState.Deleted)
@@ -43,7 +49,7 @@ namespace Crud.DDD.Infrastructure.Data.Interceptors
                 }
             }
 
-            return base.SavingChanges(eventData, result);
+            return await base.SavedChangesAsync(eventData, result, cancellationToken);
         }
     }
 }

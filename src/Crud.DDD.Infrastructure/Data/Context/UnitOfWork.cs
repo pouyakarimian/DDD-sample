@@ -8,57 +8,150 @@ namespace Crud.DDD.Infrastructure.Data.Context
     public sealed class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDBContext _context;
-        //private readonly IMediator _mediator;
-        public UnitOfWork(ApplicationDBContext context)
+        private readonly IMediator _mediator;
+        private readonly ICurrentUserService _currentUserService;
+
+        public UnitOfWork(ApplicationDBContext context,
+            IMediator mediator,
+            ICurrentUserService currentUserService)
         {
             _context = context;
-            //_mediator = mediator;
+            _mediator = mediator;
+            _currentUserService = currentUserService;
         }
 
-        public async Task CommitAsync()
+        public async Task CommitAsync(CancellationToken cancellationToken)
         {
-            var strategy = _context.Database.CreateExecutionStrategy();
+            var currentUser = await GetCurrentUserAsync();
 
-            // Executing the strategy.
-            await strategy.ExecuteAsync(async () =>
-            {
-                await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+            HandleAdded(currentUser);
 
-                //_logger.LogInformation("----- Begin transaction: '{TransactionId}'", transaction.TransactionId);
+            HandleDeleteded(currentUser);
 
-                try
-                {
-                    // Getting the domain events and event stores from the tracked entities in the EF Core context.
-                    //var (domainEvents, eventStores) = BeforeSaveChanges();
+            HandleModified(currentUser);
 
-                    //var rowsAffected = await _context.SaveChangesAsync();
-
-                    //_logger.LogInformation("----- Commit transaction: '{TransactionId}'", transaction.TransactionId);
-
-                    await transaction.CommitAsync();
-
-                    // Triggering the events and saving the stores.
-                    //await AfterSaveChangesAsync(domainEvents, eventStores);
-
-                    //_logger.LogInformation(
-                    //    "----- Transaction successfully confirmed: '{TransactionId}', Rows Affected: {RowsAffected}",
-                    //    transaction.TransactionId,
-                    //    rowsAffected);
-                }
-                catch (Exception ex)
-                {
-                    //_logger.LogError(
-                    //    ex,
-                    //    "An unexpected exception occurred while committing the transaction: '{TransactionId}', message: {Message}",
-                    //    transaction.TransactionId,
-                    //    ex.Message);
-
-                    await transaction.RollbackAsync();
-
-                    throw;
-                }
-            });
+            await _context.SaveChangesAsync(cancellationToken);
         }
+
+        //public async Task CommitAsync(CancellationToken cancellationToken)
+        //{
+        //    var currentUser = await GetCurrentUserAsync();
+        //    var strategy = _context.Database.CreateExecutionStrategy();
+
+        //    // Executing the strategy.
+        //    await strategy.ExecuteAsync(async () =>
+        //    {
+        //        await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+
+        //        //_logger.LogInformation("----- Begin transaction: '{TransactionId}'", transaction.TransactionId);
+
+        //        try
+        //        {
+        //            // Getting the domain events and event stores from the tracked entities in the EF Core context.
+        //            //var (domainEvents, eventStores) = BeforeSaveChanges();
+
+        //            //var rowsAffected = await _context.SaveChangesAsync();
+
+        //            //_logger.LogInformation("----- Commit transaction: '{TransactionId}'", transaction.TransactionId);
+
+        //            HandleAdded(currentUser);
+
+        //            HandleDeleteded(currentUser);
+
+        //            HandleModified(currentUser);
+
+        //            //await transaction.CommitAsync(cancellationToken);
+
+        //            // Triggering the events and saving the stores.
+        //            //await AfterSaveChangesAsync(domainEvents, eventStores);
+
+        //            //_logger.LogInformation(
+        //            //    "----- Transaction successfully confirmed: '{TransactionId}', Rows Affected: {RowsAffected}",
+        //            //    transaction.TransactionId,
+        //            //    rowsAffected);
+        //        }
+        //        catch (Exception)
+        //        {
+        //            //_logger.LogError(
+        //            //    ex,
+        //            //    "An unexpected exception occurred while committing the transaction: '{TransactionId}', message: {Message}",
+        //            //    transaction.TransactionId,
+        //            //    ex.Message);
+
+        //            await transaction.RollbackAsync();
+
+        //            throw;
+        //        }
+        //    });
+        //}
+
+        private void HandleAdded(CurrentUserInfo currentUser)
+        {
+            var added = _context.ChangeTracker.Entries()
+                .Where(p => p.State == EntityState.Added);
+
+            foreach (var entry in added)
+            {
+                if (entry is { State: EntityState.Added, Entity: IFullAudited fullAuditedModel })
+                {
+                    fullAuditedModel.CreateTime = DateTime.Now;
+                    fullAuditedModel.CreateUserId = currentUser.Id;
+                }
+            }
+        }
+
+        private void HandleModified(CurrentUserInfo currentUser)
+        {
+            var entries = _context.ChangeTracker.Entries()
+                .Where(p => p.State == EntityState.Modified);
+
+            foreach (var entry in entries)
+            {
+                if (entry is { State: EntityState.Modified, Entity: IFullAudited fullAuditedModel })
+                {
+                    fullAuditedModel.ModifyTime = DateTime.Now;
+                    fullAuditedModel.ModifyUserId = currentUser.Id;
+                }
+            }
+        }
+
+        private void HandleDeleteded(CurrentUserInfo currentUser)
+        {
+            var entries = _context.ChangeTracker.Entries()
+                .Where(p => p.State == EntityState.Deleted);
+
+            foreach (var entry in entries)
+            {
+                if (entry is { State: EntityState.Deleted, Entity: ISoftDelete softDeletedModel })
+                {
+                    entry.State = EntityState.Modified;
+                    softDeletedModel.DeleteTime = DateTime.Now;
+                    softDeletedModel.DeleteUserId = currentUser.Id;
+                    softDeletedModel.IsDeleted = true;
+                }
+            }
+        }
+
+        private async Task<CurrentUserInfo> GetCurrentUserAsync()
+        {
+            return await _currentUserService.GetCurrentUserAsync();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+        }
+
+
 
         /// <summary>
         /// Executes logic before saving changes to the database.
@@ -115,9 +208,5 @@ namespace Crud.DDD.Infrastructure.Data.Context
         //    await _eventStoreRepository.StoreAsync(eventStores);
         //}
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
     }
 }

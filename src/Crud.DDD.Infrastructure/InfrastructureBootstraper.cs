@@ -2,7 +2,6 @@
 using Crud.DDD.Core.Common;
 using Crud.DDD.Infrastructure.Data.Context;
 using Crud.DDD.Infrastructure.Data.Interceptors;
-using Crud.DDD.Infrastructure.Data.Repositories;
 using Crud.DDD.Infrastructure.Data.Repositories.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,17 +13,15 @@ namespace Crud.DDD.Infrastructure
     {
         public static IServiceCollection RegisterInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDBContext>(option =>
+
+            services.AddDbContext<ApplicationDBContext>(options =>
             {
-                option.UseSqlServer(configuration["ConnectionStrings:Default"]);
-                option.AddInterceptors(new ApplicationDbContextInterceptor());
+                options.UseSqlServer(configuration["ConnectionStrings:Default"]);
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IUserRepository, UserRepository>();
-            
-            services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
 
             return services;
         }

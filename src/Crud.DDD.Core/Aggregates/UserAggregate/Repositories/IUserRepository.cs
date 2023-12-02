@@ -4,6 +4,6 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate.Repositories
 {
     public interface IUserRepository : IBaseRepository<User, Guid>
     {
-        Task<bool> IsExistingByEmailOrUserName(string email, string userName, CancellationToken cancellationToken);
+        bool IsExistingByEmailOrUserName(string email, string userName, CancellationToken cancellationToken);
     }
 }

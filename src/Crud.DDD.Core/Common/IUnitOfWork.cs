@@ -1,7 +1,9 @@
-﻿namespace Crud.DDD.Core.Common
+﻿using Crud.DDD.Core.Aggregates.UserAggregate.Repositories;
+
+namespace Crud.DDD.Core.Common
 {
     public interface IUnitOfWork : IDisposable
     {
-        Task CommitAsync();
+        Task CommitAsync(CancellationToken cancellationToken);
     }
 }

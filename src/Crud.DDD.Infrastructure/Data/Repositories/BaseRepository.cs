@@ -5,79 +5,57 @@ using Microsoft.EntityFrameworkCore;
 namespace Crud.DDD.Infrastructure.Data.Repositories
 {
     public class BaseRepository<TEntity, TKey> :
-        IBaseRepository<TEntity, TKey>, IDisposable
+        IBaseRepository<TEntity, TKey>
         where TEntity : Entity<TKey> where TKey : notnull
     {
-        private readonly ApplicationDBContext _context;
+        protected readonly ApplicationDBContext _context;
+        private readonly DbSet<TEntity> _dbSet;
 
         public BaseRepository(ApplicationDBContext context)
         {
             _context = context;
+            _dbSet = context.Set<TEntity>();
         }
 
         public void Add(TEntity entity)
         {
-            _context.Add<TEntity>(entity);
+            _dbSet.Add(entity);
+        }
+
+        public async Task AddAsync(TEntity entity,CancellationToken cancellationToken)
+        {
+            await _dbSet.AddAsync(entity, cancellationToken);
         }
 
         public void Delete(TEntity entity)
         {
-            _context.Remove<TEntity>(entity);
+            _dbSet.Remove(entity);
         }
 
         public void Update(TEntity entity)
         {
-            _context.Update<TEntity>(entity);
+            _dbSet.Update(entity);
         }
 
         public IQueryable<TEntity> GetAll()
         {
-            return _context.Set<TEntity>();
+            return _dbSet;
         }
 
         public IQueryable<TEntity> GetAllAsNoTracking()
         {
-            return _context.Set<TEntity>()
+            return _dbSet
                 .AsNoTracking();
         }
 
         public async Task<TEntity> GetByIdNoTrackingAsync(TKey key, CancellationToken cancellationToken)
-            => await _context
-            .Set<TEntity>()
-            .AsNoTracking()
+            => await (GetAllAsNoTracking())
             .FirstOrDefaultAsync(entity => entity.Id.Equals(key)
             , cancellationToken);
 
-        public Task<TEntity> GetByIdAsync(TKey key, CancellationToken cancellationToken)
-        => _context.Set<TEntity>()
+        public async Task<TEntity> GetByIdAsync(TKey key, CancellationToken cancellationToken)
+        => await (GetAll())
             .FirstOrDefaultAsync(p => p.Id.Equals(key), cancellationToken);
 
-        #region IDisposable
-
-        // To detect redundant calls.
-        private bool _disposed;
-
-        ~BaseRepository() => Dispose(false);
-
-        // Public implementation of Dispose pattern callable by consumers.
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        // Protected implementation of Dispose pattern.
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed)
-                return;
-
-            // Dispose managed state (managed objects).
-            if (disposing)
-                _context.Dispose();
-
-            _disposed = true;
-        }
-        #endregion
     }
 }

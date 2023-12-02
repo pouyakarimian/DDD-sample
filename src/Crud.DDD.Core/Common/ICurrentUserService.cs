@@ -20,6 +20,6 @@ namespace Crud.DDD.Core.Common
 
     public interface ICurrentUserService
     {
-        Task<User> GetCurrentUserAsync();
+        Task<CurrentUserInfo> GetCurrentUserAsync();
     }
 }

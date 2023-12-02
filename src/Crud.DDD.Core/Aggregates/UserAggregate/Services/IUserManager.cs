@@ -4,5 +4,6 @@
     {
         Task<User> AddAsync(User user, CancellationToken cancellationToken);
         Task<User> UpdateAsync(User user, CancellationToken cancellationToken);
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken);
     }
 }

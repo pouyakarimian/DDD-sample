@@ -1,5 +1,4 @@
-﻿
-using Crud.DDD.Core.Aggregates.UserAggregate.Repositories;
+﻿using Crud.DDD.Core.Aggregates.UserAggregate.Repositories;
 using Crud.DDD.Core.Common;
 using Crud.DDD.Core.Common.Exeptions;
 
@@ -7,28 +6,42 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate.Services
 {
     public class UserManager : IUserManager
     {
-        private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserRepository _userRepository;
 
-        public UserManager(IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public UserManager(IUnitOfWork unitOfWork, IUserRepository userRepository)
         {
-            _userRepository = userRepository;
             _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
         }
 
         public async Task<User> AddAsync(User user, CancellationToken cancellationToken)
         {
-            var isExistingByEmailOrUserName = await _userRepository
-            .IsExistingByEmailOrUserName(user.Email.Address, user.UserName, cancellationToken);
+
+            var isExistingByEmailOrUserName = _userRepository
+           .IsExistingByEmailOrUserName
+           (user.Email.Address, user.UserName, cancellationToken);
 
             if (isExistingByEmailOrUserName)
                 throw new NotFoundExeption($"This email {user.UserName} already used");
 
             _userRepository.Add(user);
 
-            await _unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return user;
+        }
+
+        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var entity = await _userRepository.GetByIdAsync(id, cancellationToken);
+
+            if (entity is null)
+                throw new NotFoundExeption(nameof(entity));
+
+            _userRepository.Delete(entity);
+
+            await _unitOfWork.CommitAsync(cancellationToken);
         }
 
         public async Task<User> UpdateAsync(User user, CancellationToken cancellationToken)
@@ -37,14 +50,14 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate.Services
                 .GetByIdAsync(user.Id, cancellationToken);
 
             if (userEntity is null)
-                throw new NotFoundExeption($"{user.UserName} not founded");
+                throw new NotFoundExeption($"{user.UserName}");
 
             var updatedEntity = userEntity
                 .Update(user.Id, user.UserName, user.LastName, user.LastName, user.Email);
 
             _userRepository.Update(updatedEntity);
 
-            await _unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return updatedEntity;
         }

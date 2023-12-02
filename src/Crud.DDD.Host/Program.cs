@@ -1,6 +1,7 @@
 using Crud.DDD.Application;
-using Crud.DDD.Infrastructure;
 using Crud.DDD.Core;
+using Crud.DDD.Host.Exctentions;
+using Crud.DDD.Infrastructure;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,9 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
+    .RegsiterHostModule(builder.Configuration)
+    .RegisterInfrastructure(builder.Configuration)
     .RegisterCoreLayer(builder.Configuration)
-    .RegisterApplicationLayer(builder.Configuration)
-    .RegisterInfrastructure(builder.Configuration);
+    .RegisterApplicationLayer(builder.Configuration);
 
 var app = builder.Build();
 

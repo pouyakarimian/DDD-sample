@@ -18,10 +18,18 @@ namespace Crud.DDD.Host.Controllers
 
 
         [HttpPost]
-        public IActionResult Create([Required][FromBody] CreateUserCommand userCommand,
+        public async Task<IActionResult> Create([Required][FromBody] CreateUserCommand userCommand,
             CancellationToken cancellationToken)
         {
-            _mediator.Send(userCommand, cancellationToken);
+            await _mediator.Send(userCommand, cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> DeleteAsync(Guid userId)
+        {
+            await _mediator.Send(new DeleteUserCommand(userId));
 
             return Ok();
         }

@@ -1,6 +1,5 @@
 ﻿using Crud.DDD.Core.Aggregates.UserAggregate.Repositories;
 using Crud.DDD.Infrastructure.Data.Context;
-using Microsoft.EntityFrameworkCore;
 
 namespace Crud.DDD.Infrastructure.Data.Repositories.User
 {
@@ -11,9 +10,9 @@ namespace Crud.DDD.Infrastructure.Data.Repositories.User
         {
         }
 
-        public async Task<bool> IsExistingByEmailOrUserName(string email, string userName, CancellationToken cancellationToken)
-        => await (GetAllAsNoTracking())
-            .AnyAsync(p => p.Email.Address.Equals(email)
-            || p.UserName.Equals(userName), cancellationToken);
+        public bool IsExistingByEmailOrUserName(string email, string userName, CancellationToken cancellationToken)
+        => GetAllAsNoTracking()
+            .Any(p => p.Email.Address.Equals(email)
+            || p.UserName.Equals(userName));
     }
 }

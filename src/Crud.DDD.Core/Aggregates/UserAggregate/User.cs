@@ -22,7 +22,7 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate
         public string UserName { get; private set; } = string.Empty;
         public string FirstName { get; private set; } = string.Empty;
         public string LastName { get; private set; } = string.Empty;
-        public Email Email { get; private set; }
+        public Email Email { get; private set; } = null!;
         public bool IsDeleted { get; set; }
         public Guid CreateUserId { get; set; }
         public Guid? DeleteUserId { get; set; }

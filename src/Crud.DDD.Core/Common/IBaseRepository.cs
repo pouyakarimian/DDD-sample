@@ -8,6 +8,7 @@
         Task<TEntity> GetByIdAsync(TKey key, CancellationToken cancellationToken);
         Task<TEntity> GetByIdNoTrackingAsync(TKey key, CancellationToken cancellationToken);
         void Add(TEntity entity);
+        Task AddAsync(TEntity entity, CancellationToken cancellationToken);
         void Delete(TEntity entity);
         void Update(TEntity entity);
     }

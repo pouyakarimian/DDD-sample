@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Crud.DDD.Core\Crud.DDD.Core.csproj" />
-    <ProjectReference Include="..\Crud.DDD.Infrastructure\Crud.DDD.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

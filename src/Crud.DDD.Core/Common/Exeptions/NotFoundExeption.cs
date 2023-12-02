@@ -2,8 +2,8 @@
 {
     public class NotFoundExeption : Exception
     {
-        public NotFoundExeption(string message) : base(message) { }
+        public NotFoundExeption(string message) : base(string.Concat(message, "Could not be find")) { }
         public NotFoundExeption(string message, Exception exception)
-            : base(message, exception) { }
+            : base(string.Concat(message, "Could not be find"), exception) { }
     }
 }

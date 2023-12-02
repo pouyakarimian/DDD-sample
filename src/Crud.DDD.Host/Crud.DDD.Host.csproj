@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Crud.DDD.Application\Crud.DDD.Application.csproj" />
+    <ProjectReference Include="..\Crud.DDD.Infrastructure\Crud.DDD.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
