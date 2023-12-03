@@ -58,7 +58,7 @@ namespace Crud.DDD.Host.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync([FromBody][Required] UpdateUserCommand updateUserCommand, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateAsync([Required][FromBody] UpdateUserCommand updateUserCommand, CancellationToken cancellationToken)
         {
             await _mediator.Send(updateUserCommand, cancellationToken);
 
