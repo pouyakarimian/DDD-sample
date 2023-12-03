@@ -23,7 +23,7 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate.Services
            (user.Email.Address, user.UserName, cancellationToken);
 
             if (isExistingByEmailOrUserName)
-                throw new NotFoundExeption($"This email {user.UserName} already used");
+                throw new BusinessException($"This email {user.UserName} already used");
 
             _userRepository.Add(user);
 
@@ -52,14 +52,14 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate.Services
             if (userEntity is null)
                 throw new NotFoundExeption($"{user.UserName}");
 
-            var updatedEntity = userEntity
-                .Update(user.Id, user.UserName, user.LastName, user.LastName, user.Email);
+            userEntity.Update(userEntity.Id, user.UserName, user.FirstName
+               , user.Email, user.LastName);
 
-            _userRepository.Update(updatedEntity);
+            _userRepository.Update(userEntity);
 
             await _unitOfWork.CommitAsync(cancellationToken);
 
-            return updatedEntity;
+            return user;
         }
     }
 }

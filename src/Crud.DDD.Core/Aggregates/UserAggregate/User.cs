@@ -48,7 +48,7 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate
             return user;
         }
 
-        public User Update(Guid id, string userName, string firstName, string lastName, Email email)
+        public static User Update(Guid id, string userName, string firstName, string lastName, Email email)
         {
             ArgumentException.ThrowIfNullOrEmpty(firstName, $"{nameof(firstName)} can't be null");
 
@@ -66,5 +66,29 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate
 
             return user;
         }
+
+        public User Update(Guid id, string userName, string firstName, Email email, string lastName)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(firstName, $"{nameof(firstName)} can't be null");
+
+            ArgumentException.ThrowIfNullOrEmpty(userName, $"{nameof(userName)} can't be null");
+
+            ArgumentException.ThrowIfNullOrEmpty(id.ToString(), $"{nameof(id)} can't be null");
+
+            ArgumentException.ThrowIfNullOrEmpty(email.Address, $"{nameof(email)} can't be null");
+
+            email = Email.Create(email.Address);
+
+            this.Id = id;
+            this.Email = email;
+            this.UserName = userName;
+            this.FirstName = firstName;
+            this.LastName = lastName;
+
+            this.RaiseDomainEvent(new UpdateUserDomainEvent(id, userName, firstName, lastName, email.Address));
+
+            return this;
+        }
+
     }
 }
