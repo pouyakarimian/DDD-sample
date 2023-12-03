@@ -32,10 +32,11 @@ namespace Crud.DDD.Application.Features.User.Queries
 
             return new UserDto
             {
+                Id = user.Id,
+                UserName = user.UserName,
                 Email = user.Email.Address,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Id = user.Id
             };
 
         }

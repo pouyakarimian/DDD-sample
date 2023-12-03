@@ -2,7 +2,7 @@
 
 namespace Crud.DDD.Core.Common.Pagination
 {
-    public class PagedResultDto<T>
+    public record PagedResultDto<T>
     {
         public int PageIndex { get; private set; }
         public int TotalPages { get; private set; }
@@ -27,7 +27,7 @@ namespace Crud.DDD.Core.Common.Pagination
         }
     }
 
-    public class PagingParamQuery<T> : BaseQuery<T>
+    public record PagingParamQuery<T> : BaseQuery<T>
     {
         private int _pageSize = 10;
         private int _pageIndex = 1;
@@ -55,7 +55,7 @@ namespace Crud.DDD.Core.Common.Pagination
         }
     }
 
-    public class BaseQuery<T> : IRequest<T>
+    public record BaseQuery<T> : IRequest<T>
     {
 
     }

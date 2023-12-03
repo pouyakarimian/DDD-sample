@@ -19,7 +19,7 @@ namespace Crud.DDD.Host.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Get([Required] Guid userId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAsync([Required] Guid userId, CancellationToken cancellationToken)
         {
             var getUser = new GetUserQuery
             {
@@ -32,7 +32,16 @@ namespace Crud.DDD.Host.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Required][FromBody] CreateUserCommand userCommand,
+        public async Task<IActionResult> GetAllAsync([FromBody] GetAllUsersQuery usersQuery, CancellationToken cancellationToken)
+        {
+            var users = await _mediator.Send(usersQuery, cancellationToken);
+
+            return Ok(users);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([Required][FromBody] CreateUserCommand userCommand,
             CancellationToken cancellationToken)
         {
             await _mediator.Send(userCommand, cancellationToken);
@@ -49,7 +58,7 @@ namespace Crud.DDD.Host.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody][Required] UpdateUserCommand updateUserCommand, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateAsync([FromBody][Required] UpdateUserCommand updateUserCommand, CancellationToken cancellationToken)
         {
             await _mediator.Send(updateUserCommand, cancellationToken);
 
