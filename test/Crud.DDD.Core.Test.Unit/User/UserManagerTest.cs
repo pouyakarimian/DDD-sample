@@ -9,21 +9,33 @@ namespace Crud.DDD.Core.Test.Unit.User
 {
     public class UserManagerTest
     {
+        Mock<IUnitOfWork> unitOfWork;
+        Mock<IUserRepository> userRepository;
+        UserManager userManager;
+
+        public UserManagerTest()
+        {
+            unitOfWork = new Mock<IUnitOfWork>();
+            userRepository = new Mock<IUserRepository>();
+            userManager = new UserManager(unitOfWork.Object, userRepository.Object);
+        }
+
         [Fact]
         public async Task AddAsync_ShouldSaveAndReturnValidUser_WhenAddNewUser()
         {
-            Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
-            Mock<IUserRepository> userRepository = new Mock<IUserRepository>();
-            var cancellationToken = new CancellationToken();
-            var userManager = new UserManager(mockUnitOfWork.Object, userRepository.Object);
-
             var email = Email.Create("pouya@gmail.com");
 
             var user = DDD.Core.Aggregates.UserAggregate.User.Create("pouya", "pouya", "karimin", email);
 
-            userRepository.Setup(p => p.Add(user)).Verifiable();
+            userRepository.Setup(p => p.IsExistingByEmailOrUserName(email.Address, "pouya", CancellationToken.None))
+                .Returns(false);
 
-            var userResult = await userManager.AddAsync(user, cancellationToken);
+            unitOfWork.Setup(p => p.CommitAsync(CancellationToken.None))
+               .Returns(Task.CompletedTask);
+
+            userRepository.Setup(p => p.Add(user));
+
+            var userResult = await userManager.AddAsync(user, CancellationToken.None);
 
             Assert.Equal(user, userResult);
         }
@@ -31,25 +43,39 @@ namespace Crud.DDD.Core.Test.Unit.User
         [Fact]
         public async Task AddAsync_ShouldThrowBusinessException_WhenUserAlreadyExsit()
         {
-            Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
-            Mock<IUserRepository> userRepository = new Mock<IUserRepository>();
-            var cancellationToken = new CancellationToken();
-            var userManager = new UserManager(mockUnitOfWork.Object, userRepository.Object);
-
             var email = Email.Create("pouya@gmail.com");
 
             var user = DDD.Core.Aggregates.UserAggregate.User.Create("pouya", "pouya", "karimin", email);
 
             userRepository.Setup(p => p.Add(user)).Verifiable();
 
-            userRepository.Setup(p => p.IsExistingByEmailOrUserName(email.Address, "pouya", cancellationToken))
+            userRepository.Setup(p => p.IsExistingByEmailOrUserName(email.Address, "pouya", CancellationToken.None))
                 .Returns(() => true);
 
             await Assert.ThrowsAsync<BusinessException>(async () =>
             {
-                await userManager.AddAsync(user, cancellationToken);
+                await userManager.AddAsync(user, CancellationToken.None);
             });
         }
+
+        [Fact]
+        public async Task UpdateAsync_ShouldUpdateUserAndReturn_WhenUserIsValid()
+        {
+            var userId = Guid.NewGuid();
+            var email = Email.Create("pouya@gmail.com");
+            var user = DDD.Core.Aggregates.UserAggregate
+                .User.Update(userId, "pouya", "pouya", "karimian", email);
+
+            unitOfWork.Setup(p => p.CommitAsync(CancellationToken.None))
+                .Returns(Task.CompletedTask);
+            userRepository.Setup(p => p.GetByIdAsync(userId, CancellationToken.None))
+                .Returns(Task.FromResult<DDD.Core.Aggregates.UserAggregate.User>(user));
+            userRepository.Setup(p => p.Update(user));
+
+            var result = await userManager.UpdateAsync(user, CancellationToken.None);
+            Assert.Equal(result, user);
+        }
+
 
     }
 }

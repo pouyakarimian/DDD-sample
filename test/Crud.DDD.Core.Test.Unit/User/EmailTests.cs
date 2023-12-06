@@ -9,7 +9,7 @@ namespace Crud.DDD.Domain.Test.User
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void Email_Should_ThrowBusinessException(string? address)
+        public void Email_Should_ThrowBusinessException(string address)
         {
             Email Action() => new Email(address);
 
@@ -27,7 +27,7 @@ namespace Crud.DDD.Domain.Test.User
 
         [Theory]
         [InlineData("Pouyagmail.com")]
-        public void Email_Should_Throw_BusinessException_WhenNotMatchWithPattern(string address)
+        public void Email_Should_ThrowBusinessException_WhenNotMatchWithPattern(string address)
         {
             Email Action() => Email.Create(address);
 
