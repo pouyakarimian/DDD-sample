@@ -55,6 +55,18 @@ namespace Crud.DDD.Core.Aggregates.ProductAggregate
             _products.Add(product);
             return product;
         }
+        public Product UpdateProduct(Guid productId, string name, string skuCode)
+        {
+            var product = _products
+                .FirstOrDefault(p => p.Id.Equals(productId));
+
+            if (product is null)
+                throw new NotFoundExeption(nameof(product));
+
+            product.update(productId, this.Id, name, skuCode);
+
+            return product;
+        }
         public void RemoveProduct(Guid productId)
         {
             var product = _products
