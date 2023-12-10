@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Crud.DDD.Core.Aggregates.UserAggregate.Services;
+using Crud.DDD.Core.Aggregates.ProductAggregate.Services;
 
 namespace Crud.DDD.Core
 {
@@ -9,6 +10,7 @@ namespace Crud.DDD.Core
         public static IServiceCollection RegisterCoreLayer(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IUserManager, UserManager>();
+            services.AddScoped<ICatalogManager, CatalogManager>();
 
             return services;
         }
