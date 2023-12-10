@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Crud.DDD.Core.Common;
 
 namespace Crud.DDD.Core.Aggregates.Order.Entites
 {
-    internal class OrderItem
+    public class OrderItem : Entity<Guid>
     {
+        public OrderItem(Guid id) : base(id)
+        {
+        }
     }
 }

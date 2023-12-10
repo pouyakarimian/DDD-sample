@@ -33,9 +33,9 @@ namespace Crud.DDD.Core.Aggregates.UserAggregate
 
         public static User Create(string userName, string firstName, string lastName, Email email)
         {
-            ArgumentException.ThrowIfNullOrEmpty($"{nameof(firstName)} can't be null");
+            ArgumentException.ThrowIfNullOrEmpty(firstName, $"{nameof(firstName)} can't be null");
 
-            ArgumentException.ThrowIfNullOrEmpty($"{nameof(userName)} can't be null");
+            ArgumentException.ThrowIfNullOrEmpty(userName, $"{nameof(userName)} can't be null");
 
             email = Email.Create(email.Address);
 

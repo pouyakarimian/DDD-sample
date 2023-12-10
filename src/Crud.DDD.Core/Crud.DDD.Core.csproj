@@ -13,10 +13,8 @@
     <Folder Include="Aggregates\CustomerAggregate\ValueObjects\" />
     <Folder Include="Aggregates\OrderAggregate\Enums\" />
     <Folder Include="Aggregates\OrderAggregate\Exeptions\" />
-    <Folder Include="Aggregates\OrderAggregate\ValueObjects\" />
     <Folder Include="Aggregates\ProductAggregate\Enums\" />
     <Folder Include="Aggregates\ProductAggregate\Exeptions\" />
-    <Folder Include="Aggregates\ProductAggregate\ValueObjects\" />
     <Folder Include="Aggregates\UserAggregate\Enums\" />
     <Folder Include="Aggregates\UserAggregate\Exeptions\" />
     <Folder Include="Aggregates\UserAggregate\Entites\" />

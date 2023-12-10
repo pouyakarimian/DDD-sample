@@ -1,4 +1,6 @@
-﻿using Crud.DDD.Core.Aggregates.UserAggregate;
+﻿using Crud.DDD.Core.Aggregates.ProductAggregate;
+using Crud.DDD.Core.Aggregates.ProductAggregate.Entities;
+using Crud.DDD.Core.Aggregates.UserAggregate;
 using Crud.DDD.Core.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -16,6 +18,8 @@ namespace Crud.DDD.Infrastructure.Data.Context
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Catalog> Catalogs { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

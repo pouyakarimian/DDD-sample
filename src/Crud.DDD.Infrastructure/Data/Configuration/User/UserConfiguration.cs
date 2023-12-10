@@ -7,10 +7,12 @@ namespace Crud.DDD.Infrastructure.Data.Configuration.User
     {
         public void Configure(EntityTypeBuilder<Core.Aggregates.UserAggregate.User> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id)
-                .ValueGeneratedNever();
+            .ValueGeneratedNever();
+
+            builder.Ignore(p => p.DomainEvents);
 
             builder.Property(p => p.FirstName)
                 .IsRequired()
@@ -43,7 +45,6 @@ namespace Crud.DDD.Infrastructure.Data.Configuration.User
                     .IsUnique();
             });
 
-            builder.Ignore(p => p.DomainEvents);
         }
     }
 }
