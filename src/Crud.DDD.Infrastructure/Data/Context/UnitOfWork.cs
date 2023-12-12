@@ -35,58 +35,6 @@ namespace Crud.DDD.Infrastructure.Data.Context
             await AfterSaveChangesAsync(cancellationToken);
         }
 
-        //public async Task CommitAsync(CancellationToken cancellationToken)
-        //{
-        //    var currentUser = await GetCurrentUserAsync();
-        //    var strategy = _context.Database.CreateExecutionStrategy();
-
-        //    // Executing the strategy.
-        //    await strategy.ExecuteAsync(async () =>
-        //    {
-        //        await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
-
-        //        //_logger.LogInformation("----- Begin transaction: '{TransactionId}'", transaction.TransactionId);
-
-        //        try
-        //        {
-        //            // Getting the domain events and event stores from the tracked entities in the EF Core context.
-        //            //var (domainEvents, eventStores) = BeforeSaveChanges();
-
-        //            //var rowsAffected = await _context.SaveChangesAsync();
-
-        //            //_logger.LogInformation("----- Commit transaction: '{TransactionId}'", transaction.TransactionId);
-
-        //            HandleAdded(currentUser);
-
-        //            HandleDeleteded(currentUser);
-
-        //            HandleModified(currentUser);
-
-        //            //await transaction.CommitAsync(cancellationToken);
-
-        //            // Triggering the events and saving the stores.
-        //            //await AfterSaveChangesAsync(domainEvents, eventStores);
-
-        //            //_logger.LogInformation(
-        //            //    "----- Transaction successfully confirmed: '{TransactionId}', Rows Affected: {RowsAffected}",
-        //            //    transaction.TransactionId,
-        //            //    rowsAffected);
-        //        }
-        //        catch (Exception)
-        //        {
-        //            //_logger.LogError(
-        //            //    ex,
-        //            //    "An unexpected exception occurred while committing the transaction: '{TransactionId}', message: {Message}",
-        //            //    transaction.TransactionId,
-        //            //    ex.Message);
-
-        //            await transaction.RollbackAsync();
-
-        //            throw;
-        //        }
-        //    });
-        //}
-
         private void HandleAdded(CurrentUserInfo currentUser)
         {
             var added = _context.ChangeTracker.Entries()
@@ -146,11 +94,14 @@ namespace Crud.DDD.Infrastructure.Data.Context
                 .Where(p => p.Entity.DomainEvents.Any())
                 .ToList();
 
+            if (domainEntities is null)
+                return;
+
             var domainEvents = domainEntities
-                .SelectMany(entry => entry.Entity.DomainEvents)
+                .SelectMany(p => p.Entity.DomainEvents)
                 .ToList();
 
-            domainEntities.ForEach(entry => entry.Entity.ClearDomainEvents());
+            domainEntities.ForEach(p => p.Entity.ClearDomainEvents());
 
             var tasks = domainEvents
                 .AsParallel()
