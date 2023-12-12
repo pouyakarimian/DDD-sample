@@ -2,7 +2,7 @@
 
 namespace Crud.DDD.Core.Common
 {
-    public interface IDomainEvent:INotification
+    public interface IDomainEvent : INotification
     {
     }
 }

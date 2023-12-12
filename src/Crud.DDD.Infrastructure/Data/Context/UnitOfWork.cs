@@ -31,6 +31,8 @@ namespace Crud.DDD.Infrastructure.Data.Context
             HandleModified(currentUser);
 
             await _context.SaveChangesAsync(cancellationToken);
+
+            AfterSaveChanges(cancellationToken);
         }
 
         //public async Task CommitAsync(CancellationToken cancellationToken)
@@ -135,6 +137,20 @@ namespace Crud.DDD.Infrastructure.Data.Context
         private async Task<CurrentUserInfo> GetCurrentUserAsync()
         {
             return await _currentUserService.GetCurrentUserAsync();
+        }
+
+        private void AfterSaveChanges(CancellationToken cancellationToken)
+        {
+            var events = _context.ChangeTracker
+                .Entries<IEntity>()
+                .Where(p => p.Entity.DomainEvents.Any())
+                .ToList();
+
+            events.ForEach(async p =>
+            {
+                await _mediator.Publish(p.Entity.DomainEvents, cancellationToken);
+                p.Entity.ClearDomainEvents();
+            });
         }
 
         public void Dispose()
