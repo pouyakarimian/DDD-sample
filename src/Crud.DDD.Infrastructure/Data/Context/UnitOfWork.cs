@@ -32,7 +32,7 @@ namespace Crud.DDD.Infrastructure.Data.Context
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            AfterSaveChanges(cancellationToken);
+            await AfterSaveChangesAsync(cancellationToken);
         }
 
         //public async Task CommitAsync(CancellationToken cancellationToken)
@@ -139,18 +139,25 @@ namespace Crud.DDD.Infrastructure.Data.Context
             return await _currentUserService.GetCurrentUserAsync();
         }
 
-        private void AfterSaveChanges(CancellationToken cancellationToken)
+        private async Task AfterSaveChangesAsync(CancellationToken cancellationToken)
         {
-            var events = _context.ChangeTracker
+            var domainEntities = _context.ChangeTracker
                 .Entries<IEntity>()
                 .Where(p => p.Entity.DomainEvents.Any())
                 .ToList();
 
-            events.ForEach(async p =>
-            {
-                await _mediator.Publish(p.Entity.DomainEvents, cancellationToken);
-                p.Entity.ClearDomainEvents();
-            });
+            var domainEvents = domainEntities
+                .SelectMany(entry => entry.Entity.DomainEvents)
+                .ToList();
+
+            domainEntities.ForEach(entry => entry.Entity.ClearDomainEvents());
+
+            var tasks = domainEvents
+                .AsParallel()
+                .Select(@event => _mediator.Publish(@event))
+                .ToList();
+
+            await Task.WhenAll(tasks);
         }
 
         public void Dispose()
