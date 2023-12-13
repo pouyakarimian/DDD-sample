@@ -1,9 +1,8 @@
-﻿using Crud.DDD.Core.Aggregates.ProductAggregate.Entities;
-using Crud.DDD.Core.Aggregates.ProductAggregate.Events;
+﻿using Crud.DDD.Core.Aggregates.CatalogAggregate.Events;
+using Crud.DDD.Core.Aggregates.ProductAggregate;
 using Crud.DDD.Core.Common;
-using Crud.DDD.Core.Common.Exeptions;
 
-namespace Crud.DDD.Core.Aggregates.ProductAggregate
+namespace Crud.DDD.Core.Aggregates.CatalogAggregate
 {
     public class Catalog : AggregateRoot, IFullAudited, ISoftDelete
     {
@@ -48,34 +47,6 @@ namespace Crud.DDD.Core.Aggregates.ProductAggregate
             var catalog = new Catalog(catalogId, name, normalizedName, 0);
             catalog.RaiseDomainEvent(new CreateCatalogDomainEvent(name, catalogId));
             return catalog;
-        }
-        public Product CreateProduct(string name, string skuCode)
-        {
-            var product = Product.Create(this.Id, name, skuCode);
-            _products.Add(product);
-            return product;
-        }
-        public Product UpdateProduct(Guid productId, string name, string skuCode)
-        {
-            var product = _products
-                .FirstOrDefault(p => p.Id.Equals(productId));
-
-            if (product is null)
-                throw new NotFoundExeption(nameof(product));
-
-            product.update(productId, this.Id, name, skuCode);
-
-            return product;
-        }
-        public void RemoveProduct(Guid productId)
-        {
-            var product = _products
-                .FirstOrDefault(p => p.Id.Equals(productId));
-
-            if (product is null)
-                throw new NotFoundExeption(nameof(product));
-
-            _products.Remove(product);
         }
     }
 }

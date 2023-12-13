@@ -1,9 +1,9 @@
-﻿using Crud.DDD.Core.Aggregates.ProductAggregate;
+﻿using Crud.DDD.Core.Aggregates.CatalogAggregate;
 using Microsoft.EntityFrameworkCore;
 
 namespace Crud.DDD.Infrastructure.Data.Configuration.Product
 {
-    public class CatalogConfiguration : IEntityTypeConfiguration<DDD.Core.Aggregates.ProductAggregate.Catalog>
+    public class CatalogConfiguration : IEntityTypeConfiguration<Catalog>
     {
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Catalog> builder)
         {

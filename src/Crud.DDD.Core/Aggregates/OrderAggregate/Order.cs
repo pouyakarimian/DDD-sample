@@ -19,8 +19,8 @@ namespace Crud.DDD.Core.Aggregates.Order
         public Guid? DeleteUserId { get; set; }
         #endregion
 
-        public string Description { get; private set; }
+        public string Description { get; private set; } = string.Empty;
         public decimal TotlaPrice { get; private set; }
-        public Money Money { get; private set; }
+        public Money Money { get; private set; } = null!;
     }
 }

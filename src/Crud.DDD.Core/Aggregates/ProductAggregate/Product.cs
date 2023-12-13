@@ -2,7 +2,7 @@
 using Crud.DDD.Core.Aggregates.ProductAggregate.ValueObjects;
 using Crud.DDD.Core.Common;
 
-namespace Crud.DDD.Core.Aggregates.ProductAggregate.Entities
+namespace Crud.DDD.Core.Aggregates.ProductAggregate
 {
     public class Product : Entity<Guid>, IFullAudited, ISoftDelete
     {
@@ -37,27 +37,27 @@ namespace Crud.DDD.Core.Aggregates.ProductAggregate.Entities
             ArgumentException.ThrowIfNullOrEmpty(catalogId.ToString(), nameof(skuCode));
 
             var productId = Guid.NewGuid();
-            var sku = new Crud.DDD.Core.Aggregates.ProductAggregate.ValueObjects.SKU(skuCode);
+            var sku = new SKU(skuCode);
             var product = new Product(productId, catalogId, name, sku);
             product.RaiseDomainEvent(new CreateProductDomainEvent(name, sku));
 
             return product;
         }
 
-        public Product update(Guid Id, Guid catalogId, string name, string skuCode)
+        public Product Update(Guid Id, Guid catalogId, string name, string skuCode)
         {
             ArgumentException.ThrowIfNullOrEmpty(Id.ToString(), nameof(Id));
             ArgumentException.ThrowIfNullOrEmpty(catalogId.ToString(), nameof(skuCode));
             ArgumentException.ThrowIfNullOrEmpty(name, nameof(name));
             ArgumentException.ThrowIfNullOrEmpty(skuCode, nameof(skuCode));
 
-            var sku = new Crud.DDD.Core.Aggregates.ProductAggregate.ValueObjects.SKU(skuCode);
-            this.CatalogId = catalogId;
+            var sku = new SKU(skuCode);
+            CatalogId = catalogId;
             this.Id = Id;
-            this.Name = name;
-            this.SKU = sku;
+            Name = name;
+            SKU = sku;
 
-            this.RaiseDomainEvent(new UpdateProductDomainEvent(Id, name, sku));
+            RaiseDomainEvent(new UpdateProductDomainEvent(Id, name, sku));
 
             return this;
         }

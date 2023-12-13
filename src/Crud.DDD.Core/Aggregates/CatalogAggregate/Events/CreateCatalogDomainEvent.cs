@@ -1,6 +1,6 @@
 ﻿using Crud.DDD.Core.Common;
 
-namespace Crud.DDD.Core.Aggregates.ProductAggregate.Events
+namespace Crud.DDD.Core.Aggregates.CatalogAggregate.Events
 {
     public record CreateCatalogDomainEvent : IDomainEvent
     {

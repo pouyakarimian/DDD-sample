@@ -7,12 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Aggregates\CatalogAggregate\Entities\" />
+    <Folder Include="Aggregates\CatalogAggregate\Enums\" />
+    <Folder Include="Aggregates\CatalogAggregate\Exeptions\" />
+    <Folder Include="Aggregates\CatalogAggregate\ValueObjects\" />
     <Folder Include="Aggregates\CustomerAggregate\Entites\" />
     <Folder Include="Aggregates\CustomerAggregate\Enums\" />
     <Folder Include="Aggregates\CustomerAggregate\Exeptions\" />
     <Folder Include="Aggregates\CustomerAggregate\ValueObjects\" />
     <Folder Include="Aggregates\OrderAggregate\Enums\" />
     <Folder Include="Aggregates\OrderAggregate\Exeptions\" />
+    <Folder Include="Aggregates\ProductAggregate\Entities\" />
     <Folder Include="Aggregates\ProductAggregate\Enums\" />
     <Folder Include="Aggregates\ProductAggregate\Exeptions\" />
     <Folder Include="Aggregates\UserAggregate\Enums\" />

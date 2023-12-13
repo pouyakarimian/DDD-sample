@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Crud.DDD.Infrastructure.Data.Configuration.Product
 {
-    public sealed class ProductConfiguration : IEntityTypeConfiguration<DDD.Core.Aggregates.ProductAggregate.Entities.Product>
+    public sealed class ProductConfiguration : IEntityTypeConfiguration<Core.Aggregates.ProductAggregate.Product>
     {
-        public void Configure(EntityTypeBuilder<Core.Aggregates.ProductAggregate.Entities.Product> builder)
+        public void Configure(EntityTypeBuilder<Core.Aggregates.ProductAggregate.Product> builder)
         {
             builder.HasKey(p => p.Id);
 

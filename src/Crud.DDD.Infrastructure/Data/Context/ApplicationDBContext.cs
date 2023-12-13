@@ -1,5 +1,5 @@
-﻿using Crud.DDD.Core.Aggregates.ProductAggregate;
-using Crud.DDD.Core.Aggregates.ProductAggregate.Entities;
+﻿using Crud.DDD.Core.Aggregates.CatalogAggregate;
+using Crud.DDD.Core.Aggregates.ProductAggregate;
 using Crud.DDD.Core.Aggregates.UserAggregate;
 using Crud.DDD.Core.Common;
 using Microsoft.EntityFrameworkCore;

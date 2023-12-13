@@ -1,8 +1,10 @@
-﻿using Crud.DDD.Core.Aggregates.ProductAggregate.Repositories;
+﻿using Crud.DDD.Core.Aggregates.CatalogAggregate.Repositories;
+using Crud.DDD.Core.Aggregates.ProductAggregate.Repositories;
 using Crud.DDD.Core.Aggregates.UserAggregate.Repositories;
 using Crud.DDD.Core.Common;
 using Crud.DDD.Infrastructure.Data.Context;
 using Crud.DDD.Infrastructure.Data.Repositories.Catalog;
+using Crud.DDD.Infrastructure.Data.Repositories.Product;
 using Crud.DDD.Infrastructure.Data.Repositories.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +27,8 @@ namespace Crud.DDD.Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<ICatalogRepository, CatalogRepository>();
+
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             return services;
         }

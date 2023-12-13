@@ -69,7 +69,10 @@ namespace Crud.DDD.Core.Test.Unit.User
             unitOfWork.Setup(p => p.CommitAsync(CancellationToken.None))
                 .Returns(Task.CompletedTask);
             userRepository.Setup(p => p.GetByIdAsync(userId, CancellationToken.None))
-                .Returns(Task.FromResult<DDD.Core.Aggregates.UserAggregate.User>(user));
+                .Returns(async () =>
+                {
+                    await Task.FromResult(user);
+                });
             userRepository.Setup(p => p.Update(user));
 
             var result = await userManager.UpdateAsync(user, CancellationToken.None);

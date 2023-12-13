@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Crud.DDD.Core.Aggregates.UserAggregate.Services;
 using Crud.DDD.Core.Aggregates.ProductAggregate.Services;
+using Crud.DDD.Core.Aggregates.CatalogAggregate.Services;
 
 namespace Crud.DDD.Core
 {
@@ -11,6 +12,7 @@ namespace Crud.DDD.Core
         {
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<ICatalogManager, CatalogManager>();
+            services.AddScoped<IProductManager, ProductManager>();
 
             return services;
         }

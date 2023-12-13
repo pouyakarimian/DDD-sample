@@ -48,12 +48,12 @@ namespace Crud.DDD.Infrastructure.Data.Repositories
                 .AsNoTracking();
         }
 
-        public async Task<TEntity> GetByIdNoTrackingAsync(TKey key, CancellationToken cancellationToken)
+        public async Task<TEntity?> GetByIdNoTrackingAsync(TKey key, CancellationToken cancellationToken)
             => await (GetAllAsNoTracking())
             .FirstOrDefaultAsync(entity => entity.Id.Equals(key)
             , cancellationToken);
 
-        public async Task<TEntity> GetByIdAsync(TKey key, CancellationToken cancellationToken)
+        public async Task<TEntity?> GetByIdAsync(TKey key, CancellationToken cancellationToken)
         => await (GetAll())
             .FirstOrDefaultAsync(p => p.Id.Equals(key), cancellationToken);
 
