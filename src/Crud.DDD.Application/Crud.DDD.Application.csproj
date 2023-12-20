@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <Folder Include="Behaviors\" />
+    <Folder Include="Features\Catalog\Commands\" />
+    <Folder Include="Features\Catalog\Events\" />
   </ItemGroup>
 
   <ItemGroup>

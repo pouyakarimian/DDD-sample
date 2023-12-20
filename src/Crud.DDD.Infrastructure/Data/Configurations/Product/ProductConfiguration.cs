@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Crud.DDD.Infrastructure.Data.Configuration.Product
+namespace Crud.DDD.Infrastructure.Data.Configurations.Product
 {
     public sealed class ProductConfiguration : IEntityTypeConfiguration<Core.Aggregates.ProductAggregate.Product>
     {

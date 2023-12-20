@@ -2,8 +2,8 @@
 {
     public interface ICatalogManager
     {
-        Task<Catalog> AddCatalogAsync(Catalog catalog, CancellationToken cancellationToken);
-        Task<Catalog> UpdateCatalogAsync(Catalog catalog, CancellationToken cancellationToken);
-        Task<Catalog> DeleteCatalogAsync(Guid catalogId, CancellationToken cancellationToken);
+        Task<Catalog> AddAsync(Catalog catalog, CancellationToken cancellationToken);
+        Task UpdateAsync(Catalog catalog, CancellationToken cancellationToken);
+        Task DeleteAsync(Guid catalogId, CancellationToken cancellationToken);
     }
 }

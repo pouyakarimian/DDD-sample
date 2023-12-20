@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Crud.DDD.Infrastructure.Data.Configuration.User
+namespace Crud.DDD.Infrastructure.Data.Configurations.User
 {
     public class UserConfiguration : IEntityTypeConfiguration<Crud.DDD.Core.Aggregates.UserAggregate.User>
     {

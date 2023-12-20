@@ -1,6 +1,7 @@
 ﻿using Crud.DDD.Core.Aggregates.CatalogAggregate.Repositories;
 using Crud.DDD.Core.Common;
 using Crud.DDD.Core.Common.Exeptions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Crud.DDD.Core.Aggregates.CatalogAggregate.Services
 {
@@ -14,7 +15,7 @@ namespace Crud.DDD.Core.Aggregates.CatalogAggregate.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Catalog> AddCatalogAsync(Catalog catalog, CancellationToken cancellationToken)
+        public async Task<Catalog> AddAsync(Catalog catalog, CancellationToken cancellationToken)
         {
             var isExistingByName = await _catalogRepository
                 .ExistingByName(catalog.Name, cancellationToken);
@@ -29,16 +30,32 @@ namespace Crud.DDD.Core.Aggregates.CatalogAggregate.Services
             return catalog;
         }
 
-       
-
-        public Task<Catalog> DeleteCatalogAsync(Guid catalogId, CancellationToken cancellationToken)
+        public async Task DeleteAsync([NotNull] Guid catalogId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var catalogEntity = await _catalogRepository
+              .GetByIdAsync(catalogId, cancellationToken);
+
+            if (catalogEntity is null)
+                throw new NotFoundExeption(nameof(catalogEntity));
+
+            _catalogRepository.Delete(catalogEntity);
+
+            await _unitOfWork.CommitAsync(cancellationToken);
         }
 
-        public Task<Catalog> UpdateCatalogAsync(Catalog catalog, CancellationToken cancellationToken)
+        public async Task UpdateAsync(Catalog catalog, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var catalogEntity = await _catalogRepository
+              .GetByIdAsync(catalog.Id, cancellationToken);
+
+            if (catalogEntity is null)
+                throw new NotFoundExeption(nameof(catalogEntity));
+
+            catalogEntity.Update(catalog.Name);
+
+            _catalogRepository.Update(catalogEntity);
+
+            await _unitOfWork.CommitAsync(cancellationToken);
         }
     }
 }

@@ -1,11 +1,10 @@
-﻿using Crud.DDD.Core.Aggregates.CatalogAggregate;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Crud.DDD.Infrastructure.Data.Configuration.Product
+namespace Crud.DDD.Infrastructure.Data.Configurations.Catalog
 {
-    public class CatalogConfiguration : IEntityTypeConfiguration<Catalog>
+    public class CatalogConfiguration : IEntityTypeConfiguration<Core.Aggregates.CatalogAggregate.Catalog>
     {
-        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Catalog> builder)
+        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Core.Aggregates.CatalogAggregate.Catalog> builder)
         {
             builder.HasKey(p => p.Id);
 
@@ -27,7 +26,7 @@ namespace Crud.DDD.Infrastructure.Data.Configuration.Product
                 .HasForeignKey(p => p.Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Metadata.FindNavigation(nameof(Catalog.Products))
+            builder.Metadata.FindNavigation(nameof(Core.Aggregates.CatalogAggregate.Catalog.Products))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
 
         }

@@ -2,8 +2,8 @@
 {
     public interface IProductManager
     {
-        Task<Product> AddProductAsync(Product product, CancellationToken cancellationToken);
-        Task<Product> UpdateProductAsync(Product product, CancellationToken cancellationToken);
-        Task<Product> DeleteProductAsync(Guid productId, CancellationToken cancellationToken);
+        Task<Product> AddAsync(Product product, CancellationToken cancellationToken);
+        Task<Product> UpdateAsync(Product product, CancellationToken cancellationToken);
+        Task DeleteAsync(Guid productId, CancellationToken cancellationToken);
     }
 }

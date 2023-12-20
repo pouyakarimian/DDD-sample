@@ -48,5 +48,14 @@ namespace Crud.DDD.Core.Aggregates.CatalogAggregate
             catalog.RaiseDomainEvent(new CreateCatalogDomainEvent(name, catalogId));
             return catalog;
         }
+
+        public Catalog Update(string name)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(name, $"{nameof(name)} can't be null");
+            var normalizedName = name.ToUpper();
+            var catalog = new Catalog(this.Id, name, normalizedName, 0);
+            catalog.RaiseDomainEvent(new UpdateCatalogDomainEvent(name, this.Id));
+            return catalog;
+        }
     }
 }
