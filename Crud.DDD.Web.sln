@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crud.DDD.Core.Shared", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crud.DDD.Core.Test.Unit", "test\Crud.DDD.Core.Test.Unit\Crud.DDD.Core.Test.Unit.csproj", "{CF3DAE94-ECDA-40AF-B7F1-B464128FB154}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crud.DDD.IntergrationEvents", "src\Crud.DDD.IntergrationEvents\Crud.DDD.IntergrationEvents.csproj", "{233FBC40-A2E8-445A-9D2D-85B89C7577C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{CF3DAE94-ECDA-40AF-B7F1-B464128FB154}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF3DAE94-ECDA-40AF-B7F1-B464128FB154}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF3DAE94-ECDA-40AF-B7F1-B464128FB154}.Release|Any CPU.Build.0 = Release|Any CPU
+		{233FBC40-A2E8-445A-9D2D-85B89C7577C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{233FBC40-A2E8-445A-9D2D-85B89C7577C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{233FBC40-A2E8-445A-9D2D-85B89C7577C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{233FBC40-A2E8-445A-9D2D-85B89C7577C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{0A2E4E35-EE1B-4181-8BFA-B67B4359686B} = {2E1C76BB-7B84-4986-B08B-F002724CDE49}
 		{E935BBE4-07E5-4114-840A-EC33FDA38D38} = {2E1C76BB-7B84-4986-B08B-F002724CDE49}
 		{CF3DAE94-ECDA-40AF-B7F1-B464128FB154} = {7DB8CAE2-A405-4271-A7FA-805F48FD63AA}
+		{233FBC40-A2E8-445A-9D2D-85B89C7577C3} = {2E1C76BB-7B84-4986-B08B-F002724CDE49}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8141AE3A-DA01-496C-8C8A-D1FA34B99129}
