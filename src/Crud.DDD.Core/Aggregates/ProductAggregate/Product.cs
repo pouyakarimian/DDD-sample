@@ -39,7 +39,7 @@ namespace Crud.DDD.Core.Aggregates.ProductAggregate
             var productId = Guid.NewGuid();
             var sku = new SKU(skuCode);
             var product = new Product(productId, catalogId, name, sku);
-            product.RaiseDomainEvent(new CreateProductDomainEvent(name, sku));
+            product.RaiseDomainEvent(new CreateProductDomainEvent(productId, name, sku));
 
             return product;
         }

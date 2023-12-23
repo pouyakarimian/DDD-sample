@@ -17,6 +17,8 @@ namespace Crud.DDD.Application
             services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(typeof(ApplicationBootstraper).Assembly));
 
+            services.AddAutoMapper(typeof(ApplicationBootstraper));
+
             return services;
         }
     }

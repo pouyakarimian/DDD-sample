@@ -8,10 +8,7 @@ using MediatR;
 namespace Crud.DDD.Application.Features.Catalog.Queries
 {
 
-    public sealed record GetCatalogQuery : IRequest<CatalogDto>
-    {
-        public required Guid Id { get; init; }
-    }
+    public sealed record GetCatalogQuery(Guid Id) : IRequest<CatalogDto>;
 
     public sealed class GetCatalogQueryValidator : AbstractValidator<GetCatalogQuery>
     {

@@ -1,4 +1,5 @@
-﻿using Crud.DDD.Core.Aggregates.ProductAggregate.Repositories;
+﻿using Crud.DDD.Core.Aggregates.CatalogAggregate.Repositories;
+using Crud.DDD.Core.Aggregates.ProductAggregate.Repositories;
 using Crud.DDD.Core.Common;
 using Crud.DDD.Core.Common.Exeptions;
 using System.Diagnostics.CodeAnalysis;
@@ -8,21 +9,29 @@ namespace Crud.DDD.Core.Aggregates.ProductAggregate.Services
     public class ProductManager : IProductManager
     {
         private readonly IProductRepository _productRepository;
+        private readonly ICatalogRepository _catalogRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ProductManager(IProductRepository productRepository, IUnitOfWork unitOfWork)
+        public ProductManager(IProductRepository productRepository, IUnitOfWork unitOfWork
+            , ICatalogRepository catalogRepository = null)
         {
             _productRepository = productRepository;
             _unitOfWork = unitOfWork;
+            _catalogRepository = catalogRepository;
         }
 
         public async Task<Product> AddAsync(Product product, CancellationToken cancellationToken)
         {
             var productEntity = await _productRepository
-               .GetByIdAsync(product.Id, cancellationToken);
+               .ExistingByNameAsync(product.Name, cancellationToken);
 
-            if (productEntity is null)
-                throw new NotFoundExeption(nameof(productEntity));
+            if (productEntity)
+                throw new BusinessException($"{product.Name} already exist");
+
+            var catalog = _catalogRepository.GetByIdNoTrackingAsync(product.CatalogId, cancellationToken);
+
+            if (catalog is null)
+                throw new NotFoundExeption($"CatalogId {product.CatalogId}");
 
             _productRepository.Add(product);
 

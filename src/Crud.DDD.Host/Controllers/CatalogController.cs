@@ -20,7 +20,7 @@ namespace Crud.DDD.Host.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CatalogDto>> GetAsync([Required] Guid id)
         {
-            await _mediator.Send(new GetCatalogQuery() { Id = id });
+            await _mediator.Send(new GetCatalogQuery(id));
 
             return Ok();
         }

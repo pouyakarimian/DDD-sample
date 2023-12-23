@@ -4,8 +4,8 @@ namespace Crud.DDD.Core.Aggregates.ProductAggregate.ValueObjects
 {
     public record SKU
     {
-        private const int SKU_MIN_LENGTH = 8;
-        private const int SKU_MAX_LENGTH = 12;
+        public const int SKU_MIN_LENGTH = 8;
+        public const int SKU_MAX_LENGTH = 12;
         private SKU()
         {
 
